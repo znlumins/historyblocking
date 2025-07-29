@@ -1,0 +1,42 @@
+/* ======================================================= */
+/*             CSS FINAL UNTUK APLIKASI HYBRID             */
+/* ======================================================= */
+
+/* --- BAGIAN 1: Aturan Normal untuk Semua Halaman --- */
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+
+/* --- BAGIAN 2: Aturan KHUSUS yang HANYA AKTIF di Halaman AR --- */
+
+/* Ini hanya akan berlaku jika <body> memiliki kelas 'ar-mode-active' */
+body.ar-mode-active {
+  /* Paksa body untuk tidak pernah bisa di-scroll,
+     menjebak <video> raksasa dari AR.js */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden !important; /* !important untuk memastikan menang */
+  position: fixed; /* Kunci posisi body agar tidak bergerak */
+}
+
+/* Angkat seluruh aplikasi React ke lapisan atas agar tidak tertimpa */
+body.ar-mode-active #root {
+  position: relative;
+  z-index: 10;
+}
