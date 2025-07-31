@@ -1,12 +1,12 @@
+// File: src/components/Navbar.jsx (Versi Final Tanpa Logo di Menu Mobile)
+
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useTheme } from "@/contexts/ThemeContext";
 import UserDropdown from "./UserDropdown";
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -20,7 +20,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="w-full h-16 md:h-20 lg:h-[110px] bg-historic-brown dark:bg-gray-800 border-b-2 md:border-b-4 border-historic-brown-dark dark:border-gray-700 shadow-lg px-4 md:px-8 lg:px-20 relative">
+      <header className="w-full h-16 md:h-20 lg:h-[110px] bg-historic-brown dark:bg-gray-800 border-b-2 md:border-b-4 border-historic-brown-dark dark:border-gray-700 shadow-lg px-4 md:px-8 lg:px-20 relative z-40">
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Merriweather:wght@400;700&family=Georgia:wght@400&display=swap"
@@ -97,7 +97,7 @@ const Navbar = () => {
                   Tutorial Gameplay
                 </Link>
                 <Link
-                  to="/login"
+                  to="/leaderboard"
                   className={`font-quicksand text-base transition-colors ${
                     isActive("/leaderboard")
                       ? "text-historic-yellow-light font-bold"
@@ -112,7 +112,6 @@ const Navbar = () => {
 
           {/* Right side - Auth Actions and Mobile Menu Button */}
           <div className="flex items-center gap-4 lg:w-64 justify-end">
-            {/* Desktop Auth Actions */}
             <div className="hidden lg:flex items-center">
               {isAuthenticated && user ? (
                 <UserDropdown userName={user.name} userLevel={user.level} />
@@ -134,7 +133,6 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden text-white dark:text-gray-200 hover:text-historic-yellow-light transition-colors p-2"
@@ -174,22 +172,17 @@ const Navbar = () => {
           onClick={closeMobileMenu}
         >
           <div
-            className="bg-white dark:bg-gray-800 w-full max-w-sm h-full shadow-xl overflow-y-auto transform transition-transform duration-300 ease-in-out animate-in slide-in-from-left"
+            className="relative bg-white dark:bg-gray-800 w-full max-w-sm h-full shadow-xl flex flex-col transform transition-transform duration-300 ease-in-out animate-in slide-in-from-left"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Mobile Menu Header */}
             <div className="bg-historic-brown dark:bg-gray-700 p-4 border-b border-historic-brown-dark dark:border-gray-600">
-              <div className="flex items-center justify-between mb-4">
-                <Link to="/" onClick={closeMobileMenu}>
-                  <img
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/507170e63ed72fa0abf94c821deabb0a1109b706?placeholderIfAbsent=true"
-                    alt="HISTORIC BLOCK"
-                    className="w-[40px] h-[40px]"
-                  />
-                </Link>
+              {/* === PERUBAHAN DI SINI === */}
+              <div className="flex items-center justify-end mb-4">
+                {/* Logo dihapus dari sini */}
                 <button
                   onClick={closeMobileMenu}
                   className="text-white dark:text-gray-200 hover:text-historic-yellow-light transition-colors p-2"
+                  aria-label="Tutup menu"
                 >
                   <svg
                     className="w-6 h-6"
@@ -206,8 +199,8 @@ const Navbar = () => {
                   </svg>
                 </button>
               </div>
+              {/* === AKHIR PERUBAHAN === */}
 
-              {/* User Profile Info in Mobile Menu */}
               {isAuthenticated && user && (
                 <div className="flex items-center gap-3 bg-historic-brown-dark dark:bg-gray-600 rounded-lg p-3">
                   <div className="w-12 h-12 bg-historic-yellow rounded-full flex items-center justify-center">
@@ -216,19 +209,18 @@ const Navbar = () => {
                     </span>
                   </div>
                   <div className="flex-1">
-                    <div className="font-quicksand font-bold text-white dark:text-gray-100 text-sm">
+                    <p className="font-quicksand font-bold text-white dark:text-gray-100 text-sm">
                       {user.name}
-                    </div>
-                    <div className="font-quicksand text-historic-yellow-light dark:text-yellow-300 text-xs">
+                    </p>
+                    <p className="font-quicksand text-historic-yellow-light dark:text-yellow-300 text-xs">
                       {user.level}
-                    </div>
+                    </p>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Mobile Menu Content */}
-            <nav className="p-4 space-y-4">
+            <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
               <Link
                 to="/"
                 onClick={closeMobileMenu}
@@ -277,21 +269,8 @@ const Navbar = () => {
                     📖 Tutorial Gameplay
                   </Link>
 
-                  {/* Mobile Menu Divider */}
-                  <div className="border-t border-historic-brown-dark dark:border-gray-700 my-4"></div>
+                  <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
 
-                  {/* Theme Toggle in Mobile Menu */}
-                  <button
-                    onClick={() => {
-                      toggleTheme();
-                      closeMobileMenu();
-                    }}
-                    className="block w-full font-quicksand text-lg py-3 px-4 rounded-lg text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-left"
-                  >
-                    {theme === "dark" ? "☀️ Mode Terang" : "🌙 Mode Gelap"}
-                  </button>
-
-                  {/* User Menu Items for Mobile */}
                   <Link
                     to="/profile"
                     onClick={closeMobileMenu}
@@ -321,10 +300,9 @@ const Navbar = () => {
                     ⚙️ Pengaturan
                   </Link>
 
-                  {/* Admin Menu for Mobile */}
                   {user?.role === "admin" && (
                     <>
-                      <div className="border-t border-historic-brown-dark dark:border-gray-700 my-4"></div>
+                      <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
                       <Link
                         to="/admin"
                         onClick={closeMobileMenu}
@@ -343,44 +321,36 @@ const Navbar = () => {
                     className={`block font-quicksand text-lg py-3 px-4 rounded-lg transition-colors ${
                       isActive("/tutorial")
                         ? "bg-historic-yellow text-historic-brown-dark font-bold"
-                        : "text-white hover:bg-historic-brown-dark dark:hover:bg-gray-700"
+                        : "text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
                     }`}
                   >
                     📖 Tutorial Gameplay
                   </Link>
                   <Link
-                    to="/login"
+                    to="/leaderboard"
                     onClick={closeMobileMenu}
-                    className="block font-quicksand text-lg py-3 px-4 rounded-lg text-white hover:bg-historic-brown-dark dark:hover:bg-gray-700 transition-colors"
+                    className={`block font-quicksand text-lg py-3 px-4 rounded-lg transition-colors ${
+                      isActive("/leaderboard")
+                        ? "bg-historic-yellow text-historic-brown-dark font-bold"
+                        : "text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
                   >
                     🏆 Leaderboard
                   </Link>
 
-                  {/* Mobile Auth Actions */}
-                  <div className="border-t border-historic-brown-dark dark:border-gray-700 my-4"></div>
-
-                  {/* Theme Toggle in Mobile Menu */}
-                  <button
-                    onClick={() => {
-                      toggleTheme();
-                      closeMobileMenu();
-                    }}
-                    className="block w-full font-quicksand text-lg py-3 px-4 rounded-lg text-white hover:bg-historic-brown-dark dark:hover:bg-gray-700 transition-colors text-left"
-                  >
-                    {theme === "dark" ? "☀️ Mode Terang" : "🌙 Mode Gelap"}
-                  </button>
+                  <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
 
                   <Link
                     to="/login"
                     onClick={closeMobileMenu}
-                    className="block font-quicksand text-lg py-3 px-4 rounded-lg text-white hover:bg-historic-brown-dark dark:hover:bg-gray-700 transition-colors"
+                    className="block font-quicksand text-lg py-3 px-4 rounded-lg text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
                     🚪 Masuk
                   </Link>
                   <Link
                     to="/register"
                     onClick={closeMobileMenu}
-                    className="block font-quicksand text-lg py-3 px-4 rounded-lg bg-gradient-to-r from-historic-yellow to-historic-orange text-white hover:from-historic-orange hover:to-historic-yellow transition-all duration-200 shadow-lg"
+                    className="block w-full text-center font-quicksand text-lg py-3 px-4 rounded-lg bg-gradient-to-r from-historic-yellow to-historic-orange text-white hover:from-historic-orange hover:to-historic-yellow transition-all duration-200 shadow-lg"
                   >
                     ✨ Daftar
                   </Link>
@@ -388,17 +358,19 @@ const Navbar = () => {
               )}
             </nav>
 
-            {/* Mobile Menu Footer */}
             {isAuthenticated && (
-              <div className="absolute bottom-4 left-4 right-4">
+              <div className="p-4 border-t border-gray-200 dark:border-gray-700">
                 <button
                   onClick={() => {
-                    closeMobileMenu();
                     logout();
+                    closeMobileMenu();
                   }}
-                  className="w-full font-quicksand text-lg py-3 px-4 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 font-quicksand text-lg py-3 px-4 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
                 >
-                  🚪 Keluar
+                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
+                  </svg>
+                  Keluar
                 </button>
               </div>
             )}
